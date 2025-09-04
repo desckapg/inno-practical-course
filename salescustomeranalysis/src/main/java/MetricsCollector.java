@@ -5,14 +5,28 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Collects analytical metrics over a list of orders.
+ * The instance holds a reference to the provided orders list.
+ */
 public class MetricsCollector {
 
     private final List<Order> orders;
 
+    /**
+     * Creates a new metrics collector over the given orders.
+     *
+     * @param orders source orders to analyze; must be non-null
+     */
     public MetricsCollector(List<Order> orders) {
         this.orders = orders;
     }
 
+    /**
+     * Returns distinct customer cities found across all orders.
+     *
+     * @return list of unique cities (encounter order)
+     */
     public List<String> getUniqueCities() {
         return orders.stream()
                 .map(order -> order.getCustomer().getCity())
@@ -20,6 +34,12 @@ public class MetricsCollector {
                 .toList();
     }
 
+    /**
+     * Calculates total income from delivered orders only.
+     * Income is the sum of quantity * price over all items in delivered orders.
+     *
+     * @return total income; 0.0 if none
+     */
     public double getTotalIncome() {
         return orders.stream()
                 .filter(order -> order.getStatus() == OrderStatus.DELIVERED)
@@ -28,6 +48,11 @@ public class MetricsCollector {
                 .sum();
     }
 
+    /**
+     * Finds the most frequently ordered product by name across all orders.
+     *
+     * @return product name if present; empty if there are no items
+     */
     public Optional<String> getMostPopularProduct() {
         return orders.stream()
                 .flatMap(order -> order.getItems().stream())
@@ -40,6 +65,12 @@ public class MetricsCollector {
 
     }
 
+    /**
+     * Computes the average check for delivered orders.
+     * The check is the sum of quantity * price per order's items.
+     *
+     * @return average delivered order amount; 0.0 if none
+     */
     public double getAverageCheck() {
         return orders.stream()
                 .filter(order -> order.getStatus() == OrderStatus.DELIVERED)
@@ -50,6 +81,11 @@ public class MetricsCollector {
                 .orElse(0.0);
     }
 
+    /**
+     * Returns customers who have placed more than five orders.
+     *
+     * @return list of customers with order count > 5
+     */
     public List<Customer> getCustomersWhoHaveMoreThanFiveOrders() {
         return orders.stream()
                 .map(Order::getCustomer)
