@@ -1,10 +1,20 @@
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
+/**
+ * Entry point that simulates a multi-day competition between two factions
+ * collecting parts from a shared factory using a thread pool.
+ */
 public class Main {
 
     private static final int DAYS_COUNT = 100;
 
+    /**
+     * Runs the simulation for a fixed number of days:
+     * each day the factory produces parts and both factions attempt to take them.
+     * Finally prints the winner based on the number of buildable robots.
+     *
+     */
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         var pool = Executors.newCachedThreadPool();
         var factory = new Factory();

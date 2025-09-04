@@ -2,6 +2,10 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Represents a competing faction that collects robot parts from the factory
+ * and can assemble robots from the gathered parts.
+ */
 public class Faction {
 
     private static final int TAKING_PART_COUNT_PER_DAY = 5;
@@ -11,6 +15,12 @@ public class Faction {
     private final Map<RobotPart, Integer> parts;
     private final Random random;
 
+    /**
+     * Creates a faction bound to the given factory.
+     *
+     * @param name    faction name
+     * @param factory shared factory to take parts from
+     */
     public Faction(String name, Factory factory) {
         this.name = name;
         this.factory = factory;
@@ -18,6 +28,10 @@ public class Faction {
         this.random = new Random();
     }
 
+    /**
+     * Attempts to take up to a fixed number of parts from the factory for the current day.
+     * May sleep briefly between attempts to reduce bias when called concurrently.
+     */
     public void startTakingParts() {
         for (int i = 0; i < TAKING_PART_COUNT_PER_DAY; i++) {
             factory.takePart().ifPresent(part ->
@@ -31,6 +45,12 @@ public class Faction {
         }
     }
 
+    /**
+     * Calculates how many complete robots can be assembled
+     * based on the minimum count among all required parts.
+     *
+     * @return number of fully buildable robots
+     */
     public int getRobotsCount() {
         return parts.values().stream()
                 .mapToInt(Integer::intValue)
@@ -38,6 +58,11 @@ public class Faction {
                 .orElse(0);
     }
 
+    /**
+     * Returns the faction name.
+     *
+     * @return faction name
+     */
     public String getName() {
         return name;
     }
