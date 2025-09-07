@@ -152,8 +152,12 @@ public class LinkedList<T> {
             throw new NoSuchElementException();
         }
         var value = head.value;
-        head = head.next;
-        head.prev = null;
+        if (head.next == null) {
+            head = tail = null;
+        } else {
+            head = head.next;
+            head.prev = null;
+        }
         size--;
         return value;
     }
@@ -169,8 +173,12 @@ public class LinkedList<T> {
             throw new NoSuchElementException();
         }
         var value = tail.value;
-        tail = tail.prev;
-        tail.next = null;
+        if (tail.prev == null) {
+            head = tail = null;
+        } else {
+            tail = tail.prev;
+            tail.next = null;
+        }
         size--;
         return value;
     }
