@@ -62,7 +62,7 @@ class MetricsCollectorTest {
     }
 
     @Test
-    void getMostPopularProduct_breadIsMostPopular_shouldReturnMostFrequentProductName() {
+    void getMostPopularProduct_eggsIsMostPopular_shouldReturnMostFrequentProductName() {
         Customer c1 = mockCustomer("Minsk");
 
         Order o1 = mockOrder(OrderStatus.DELIVERED, c1,
@@ -70,7 +70,7 @@ class MetricsCollectorTest {
                         mockItem("Bread", 2, 1.5),
                         mockItem("Milk", 1, 2.0)
                 ));
-        Order o2 = mockOrder(null, c1,
+        Order o2 = mockOrder(OrderStatus.DELIVERED, c1,
                 List.of(
                         mockItem("Bread", 1, 1.5),
                         mockItem("Eggs", 10, 0.2)
@@ -81,7 +81,7 @@ class MetricsCollectorTest {
         Optional<String> mostPopular = mc.getMostPopularProduct();
 
         assertThat(mostPopular.isPresent()).isTrue();
-        assertThat(mostPopular.get()).isEqualTo("Bread");
+        assertThat(mostPopular.get()).isEqualTo("Eggs");
     }
 
     @Test
