@@ -87,13 +87,11 @@ public class LinkedList<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void add(int index, T value) {
-        if (index == 0) {
-            addFirst(value);
-        } else if (index == size) {
-            addLast(value);
+        if (!checkElementIndex(index)) {
+            throw new IndexOutOfBoundsException();
         } else {
-            if (!checkElementIndex(index)) {
-                throw new IndexOutOfBoundsException();
+            if (index  == 0) {
+                addFirst(value);
             } else {
                 Node<T> slow = null;
                 Node<T> fast = head;

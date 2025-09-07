@@ -115,11 +115,19 @@ public class LinkedListTest {
     }
 
     @Test
-    void add_indexZeroOnEmptyList_insertFirst() {
+    void add_indexZeroOnEmptyList_thrownIndexOutOfBoundsException() {
         LinkedList<Integer> list = new LinkedList<>();
-        list.add(0, 42);
-        assertThat(list.size()).isEqualTo(1);
-        assertThat(list.get(0)).isEqualTo(42);
+        assertThatThrownBy(() -> list.add(0, 42)).isInstanceOf(IndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void add_indexInHead_insertsAsNewHead() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.addLast(1);
+        list.add(0, 2);
+        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.get(0)).isEqualTo(2);
+        assertThat(list.get(1)).isEqualTo(1);
     }
 
     @Test
@@ -139,6 +147,18 @@ public class LinkedListTest {
     }
 
     @Test
+    void add_indexInTail_insertsBetweenElements() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.addLast(1);
+        list.addLast(2);
+        list.add(1,42);
+        assertThat(list.size()).isEqualTo(3);
+        assertThat(list.get(0)).isEqualTo(1);
+        assertThat(list.get(1)).isEqualTo(42);
+        assertThat(list.get(2)).isEqualTo(2);
+    }
+
+    @Test
     void add_indexOutOfBounds_throwsIndexOutOfBoundsException() {
         LinkedList<Integer> empty = new LinkedList<>();
         assertThatThrownBy(() -> empty.add(-1, 1)).isInstanceOf(IndexOutOfBoundsException.class);
@@ -148,7 +168,7 @@ public class LinkedListTest {
         list.addLast(1);
         list.addLast(2);
         assertThatThrownBy(() -> list.add(-1, 0)).isInstanceOf(IndexOutOfBoundsException.class);
-        assertThatThrownBy(() -> list.add(3, 0)).isInstanceOf(IndexOutOfBoundsException.class);
+        assertThatThrownBy(() -> list.add(2, 0)).isInstanceOf(IndexOutOfBoundsException.class);
     }
 
 }
