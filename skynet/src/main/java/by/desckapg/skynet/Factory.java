@@ -1,9 +1,11 @@
+package by.desckapg.skynet;
+
 import java.util.Optional;
 import java.util.Random;
 import java.util.Stack;
 
 /**
- * Factory that randomly produces robot parts and allows synchronized retrieval of parts.
+ * by.desckapg.skynet.Factory that randomly produces robot parts and allows synchronized retrieval of parts.
  * Internally stores parts in a LIFO stack.
  */
 public class Factory {

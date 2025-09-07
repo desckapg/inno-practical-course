@@ -1,3 +1,5 @@
+package by.desckapg.skynet;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 

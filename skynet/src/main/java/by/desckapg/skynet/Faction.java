@@ -1,3 +1,5 @@
+package by.desckapg.skynet;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
@@ -36,7 +38,7 @@ public class Faction {
         for (int i = 0; i < TAKING_PART_COUNT_PER_DAY; i++) {
             factory.takePart().ifPresent(part ->
                     parts.put(part, parts.getOrDefault(part, 0) + 1));
-            // To prevent predictable first-called Faction as a winner
+            // To prevent predictable first-called by.desckapg.skynet.Faction as a winner
             try {
                 Thread.sleep(random.nextInt(0, 20));
             } catch (InterruptedException e) {
