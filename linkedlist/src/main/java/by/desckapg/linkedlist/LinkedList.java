@@ -206,6 +206,9 @@ public class LinkedList<T> {
                 fast = fast.next;
             }
             slow.next = fast.next;
+            if (fast.next != null) {
+                fast.next.prev = slow;
+            }
             size--;
             return fast.value;
         }
