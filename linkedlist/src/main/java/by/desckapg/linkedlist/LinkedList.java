@@ -70,11 +70,19 @@ public class LinkedList<T> {
         if (!checkElementIndex(index)) {
             throw new IndexOutOfBoundsException();
         }
-        var node = head;
-        for (; index > 0 && node != null; index--) {
-            node = node.next;
+        if (index < size / 2) {
+            var node = head;
+            for (; index > 0; index--) {
+                node = node.next;
+            }
+            return node.value;
+        } else {
+            var node = tail;
+            for (; index < size - 1; index++) {
+                node = node.prev;
+            }
+            return node.value;
         }
-        return node.value;
     }
 
     /**
@@ -90,7 +98,7 @@ public class LinkedList<T> {
         if (!checkElementIndex(index)) {
             throw new IndexOutOfBoundsException();
         } else {
-            if (index  == 0) {
+            if (index == 0) {
                 addFirst(value);
             } else {
                 Node<T> slow = null;
