@@ -1,3 +1,5 @@
+package by.desckapg.salescustomeranalysis.domain;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

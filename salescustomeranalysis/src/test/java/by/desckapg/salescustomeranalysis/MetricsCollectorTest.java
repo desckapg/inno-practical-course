@@ -1,3 +1,9 @@
+package by.desckapg.salescustomeranalysis;
+
+import by.desckapg.salescustomeranalysis.domain.Customer;
+import by.desckapg.salescustomeranalysis.domain.Order;
+import by.desckapg.salescustomeranalysis.domain.OrderItem;
+import by.desckapg.salescustomeranalysis.domain.OrderStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
