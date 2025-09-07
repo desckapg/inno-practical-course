@@ -99,7 +99,7 @@ public class LinkedList<T> {
         } else {
             Node<T> slow = null;
             Node<T> fast = head;
-            for (; index > 0 && fast != null; index--) {
+            for (; index > 0; index--) {
                 slow = fast;
                 fast = fast.next;
             }
@@ -201,7 +201,7 @@ public class LinkedList<T> {
         } else {
             Node<T> slow = null;
             Node<T> fast = head;
-            for (; index > 0 && fast != null; index--) {
+            for (; index > 0; index--) {
                 slow = fast;
                 fast = fast.next;
             }
