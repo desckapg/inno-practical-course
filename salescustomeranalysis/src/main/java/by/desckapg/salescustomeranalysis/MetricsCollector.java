@@ -100,8 +100,7 @@ public class MetricsCollector {
      */
     public List<Customer> getCustomersWhoHaveMoreThanFiveOrders() {
         return orders.stream()
-                .map(Order::getCustomer)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .collect(Collectors.groupingBy(Order::getCustomer, Collectors.counting()))
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() > 5)
