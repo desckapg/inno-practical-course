@@ -5,10 +5,7 @@ import by.desckapg.salescustomeranalysis.domain.Order;
 import by.desckapg.salescustomeranalysis.domain.OrderItem;
 import by.desckapg.salescustomeranalysis.domain.OrderStatus;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -26,7 +23,15 @@ public class MetricsCollector {
      * @param orders source orders to analyze; must be non-null
      */
     public MetricsCollector(List<Order> orders) {
-        this.orders = orders;
+        this.orders = validateOrders(orders);
+    }
+
+    private List<Order> validateOrders(List<Order> orders) {
+        Objects.requireNonNull(orders, "Orders must not be null");
+        if (orders.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("orders contains null elements");
+        }
+        return List.copyOf(orders);
     }
 
     /**
