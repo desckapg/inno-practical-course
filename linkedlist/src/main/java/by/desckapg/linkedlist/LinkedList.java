@@ -67,9 +67,7 @@ public class LinkedList<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public T get(int index) {
-        if (!checkElementIndex(index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkElementIndex(index);
         if (index < size / 2) {
             var node = head;
             for (; index > 0; index--) {
@@ -95,23 +93,20 @@ public class LinkedList<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void add(int index, T value) {
-        if (!checkElementIndex(index)) {
-            throw new IndexOutOfBoundsException();
+        checkElementIndex(index);
+        if (index == 0) {
+            addFirst(value);
         } else {
-            if (index == 0) {
-                addFirst(value);
-            } else {
-                Node<T> slow = null;
-                Node<T> fast = head;
-                for (; index > 0 && fast != null; index--) {
-                    slow = fast;
-                    fast = fast.next;
-                }
-                var node = new Node<>(value, slow, fast);
-                slow.next = node;
-                fast.prev = node;
-                size++;
+            Node<T> slow = null;
+            Node<T> fast = head;
+            for (; index > 0 && fast != null; index--) {
+                slow = fast;
+                fast = fast.next;
             }
+            var node = new Node<>(value, slow, fast);
+            slow.next = node;
+            fast.prev = node;
+            size++;
         }
     }
 
@@ -198,9 +193,8 @@ public class LinkedList<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public T remove(int index) {
-        if (!checkElementIndex(index)) {
-            throw new IndexOutOfBoundsException();
-        } else if (index == 0) {
+        checkElementIndex(index);
+        if (index == 0) {
             return removeFirst();
         } else if (index == size - 1) {
             return removeLast();
@@ -220,8 +214,10 @@ public class LinkedList<T> {
         }
     }
 
-    private boolean checkElementIndex(int index) {
-        return index >= 0 && index < size;
+    private void checkElementIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     private static class Node<T> {
