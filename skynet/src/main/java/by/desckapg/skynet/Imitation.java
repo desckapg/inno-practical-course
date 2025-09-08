@@ -45,7 +45,7 @@ public class Imitation {
                     pool.shutdownNow();
                 }
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                log.error(e.getMessage(), e);
             }
             if (world.getRobotsCount() == wednesday.getRobotsCount()) {
                 log.info("It's a tie! Both factions have {} robots", world.getRobotsCount());

@@ -1,12 +1,14 @@
 package by.desckapg.skynet;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 
 @Getter
+@Slf4j
 public class TimeController {
 
     private final int maxDays;
@@ -29,7 +31,7 @@ public class TimeController {
         try {
             latch.await(timeout, unit);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage(), e);
         }
     }
 
