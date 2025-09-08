@@ -9,6 +9,8 @@ repositories {
 }
 
 dependencies {
+    implementation("ch.qos.logback:logback-classic:1.5.18")
+
     compileOnly("org.projectlombok:lombok:1.18.40")
 	annotationProcessor("org.projectlombok:lombok:1.18.40")
 

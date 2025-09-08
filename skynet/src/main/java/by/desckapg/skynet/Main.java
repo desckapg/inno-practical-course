@@ -1,5 +1,7 @@
 package by.desckapg.skynet;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
  * Entry point that simulates a multi-day competition between two factions
  * collecting parts from a shared factory using a thread pool.
  */
+@Slf4j
 public class Main {
 
     private static final int DAYS_COUNT = 100;
@@ -37,11 +40,10 @@ public class Main {
         }
         String winner = world.getRobotsCount() > wednesday.getRobotsCount() ?
                 world.getName() : wednesday.getName();
-        System.out.printf("The winner is %s (%d %s's robots vs %d %s's robots)\n",
+        log.info("The winner is {} ({} {}'s robots vs {} {}'s robots",
                 winner,
                 world.getRobotsCount(), world.getName(),
-                wednesday.getRobotsCount(), wednesday.getName()
-        );
+                wednesday.getRobotsCount(), wednesday.getName());
     }
 
 }
