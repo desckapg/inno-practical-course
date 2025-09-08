@@ -1,5 +1,7 @@
 package by.desckapg.skynet;
 
+import lombok.Getter;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
@@ -8,42 +10,44 @@ import java.util.Random;
  * Represents a competing faction that collects robot parts from the factory
  * and can assemble robots from the gathered parts.
  */
-public class Faction {
+public class Faction implements Runnable {
 
     private static final int TAKING_PART_COUNT_PER_DAY = 5;
 
+    @Getter
     private final String name;
     private final Factory factory;
-    private final Map<RobotPart, Integer> parts;
-    private final Random random;
+    private final TimeController controller;
+    private final Map<RobotPart, Integer> parts = new EnumMap<>(RobotPart.class);
 
     /**
      * Creates a faction bound to the given factory.
      *
      * @param name    faction name
      * @param factory shared factory to take parts from
+     * @param controller time controller to switch between day and night
      */
-    public Faction(String name, Factory factory) {
+    public Faction(String name, Factory factory, TimeController controller) {
         this.name = name;
         this.factory = factory;
-        this.parts = new EnumMap<>(RobotPart.class);
-        this.random = new Random();
+        this.controller = controller;
+        this.controller.register();
     }
 
     /**
      * Attempts to take up to a fixed number of parts from the factory for the current day.
-     * May sleep briefly between attempts to reduce bias when called concurrently.
+     * May wait changing day phase.
      */
-    public void startTakingParts() {
-        for (int i = 0; i < TAKING_PART_COUNT_PER_DAY; i++) {
-            factory.takePart().ifPresent(part ->
-                    parts.put(part, parts.getOrDefault(part, 0) + 1));
-            // To prevent predictable first-called by.desckapg.skynet.Faction as a winner
-            try {
-                Thread.sleep(random.nextInt(0, 20));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+    public void run() {
+        while (controller.isRunning()) {
+            controller.waitNight();
+            for (int i = 0; i < TAKING_PART_COUNT_PER_DAY; i++) {
+                factory.takePart().ifPresent(part ->
+                        parts.put(part, parts.getOrDefault(part, 0) + 1));
             }
+            controller.markNightEnd();
+
         }
     }
 
@@ -60,12 +64,4 @@ public class Faction {
                 .orElse(0);
     }
 
-    /**
-     * Returns the faction name.
-     *
-     * @return faction name
-     */
-    public String getName() {
-        return name;
-    }
 }

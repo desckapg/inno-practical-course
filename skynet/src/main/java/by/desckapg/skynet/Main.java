@@ -1,7 +1,7 @@
 package by.desckapg.skynet;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Entry point that simulates a multi-day competition between two factions
@@ -17,19 +17,24 @@ public class Main {
      * Finally prints the winner based on the number of buildable robots.
      *
      */
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
         var pool = Executors.newCachedThreadPool();
-        var factory = new Factory();
-        var world = new Faction("World", factory);
-        var wednesday = new Faction("Wednesday", factory);
-        for (int i = 0; i < DAYS_COUNT; i++) {
-            pool.submit(factory::produceParts).get();
-            var task1 = pool.submit(world::startTakingParts);
-            var task2 = pool.submit(wednesday::startTakingParts);
-            task1.get();
-            task2.get();
+        var controller = new TimeController(100);
+        var factory = new Factory(controller);
+        var world = new Faction("World", factory, controller);
+        var wednesday = new Faction("Wednesday", factory, controller);
+        pool.execute(factory);
+        pool.execute(wednesday);
+        pool.execute(world);
+        controller.awaitEnd(3, TimeUnit.SECONDS);
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(3, TimeUnit.SECONDS)) {
+                pool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        pool.close();
         String winner = world.getRobotsCount() > wednesday.getRobotsCount() ?
                 world.getName() : wednesday.getName();
         System.out.printf("The winner is %s (%d %s's robots vs %d %s's robots)\n",
