@@ -2,6 +2,7 @@ package by.desckapg.skynet;
 
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
@@ -58,8 +59,8 @@ public class Faction implements Runnable {
      * @return number of fully buildable robots
      */
     public int getRobotsCount() {
-        return parts.values().stream()
-                .mapToInt(Integer::intValue)
+        return Arrays.stream(RobotPart.values())
+                .mapToInt(part -> parts.getOrDefault(part, 0))
                 .min()
                 .orElse(0);
     }
