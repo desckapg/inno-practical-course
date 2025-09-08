@@ -38,12 +38,16 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        String winner = world.getRobotsCount() > wednesday.getRobotsCount() ?
-                world.getName() : wednesday.getName();
-        log.info("The winner is {} ({} {}'s robots vs {} {}'s robots",
-                winner,
-                world.getRobotsCount(), world.getName(),
-                wednesday.getRobotsCount(), wednesday.getName());
+        if (world.getRobotsCount() == wednesday.getRobotsCount()) {
+            log.info("It's a tie! Both factions have {} robots", world.getRobotsCount());
+        } else {
+            String winner = world.getRobotsCount() > wednesday.getRobotsCount() ?
+                    world.getName() : wednesday.getName();
+            log.info("The winner is {} ({} {}'s robots vs {} {}'s robots",
+                    winner,
+                    world.getRobotsCount(), world.getName(),
+                    wednesday.getRobotsCount(), wednesday.getName());
+        }
     }
 
 }
