@@ -50,11 +50,13 @@ public class Factory implements Runnable {
      *
      * @return a part if available; otherwise empty
      */
-    public synchronized Optional<RobotPart> takePart() {
-        if (parts.isEmpty()) {
-            return Optional.empty();
+    public Optional<RobotPart> takePart() {
+        synchronized (parts) {
+            if (parts.isEmpty()) {
+                return Optional.empty();
+            }
+            return Optional.of(parts.pop());
         }
-        return Optional.of(parts.pop());
     }
 
 
