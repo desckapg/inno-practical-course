@@ -1,5 +1,6 @@
 .gradle
 build/
+linkedlist/build/
 gradle/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
